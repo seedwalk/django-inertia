@@ -1,6 +1,5 @@
 
 import { Link } from "@inertiajs/react";
-import { Button } from "@/components/ui/button";
 
 export default function Index({ heroes }) {
   return (
@@ -90,14 +89,12 @@ export default function Index({ heroes }) {
                     </div>
                   )}
 
-                  {/* Action Button */}
-                  <Link href={`/${hero.id}`}>
-                    <Button
-                      variant="outline"
-                      className="w-full bg-purple-600/10 hover:bg-purple-600/30 text-purple-300 border-purple-500/30 hover:border-purple-500/50"
-                    >
-                      Ver Detalles
-                    </Button>
+                  {/* Action Link */}
+                  <Link 
+                    href={`/${hero.id}`}
+                    className="block w-full text-center px-4 py-2 rounded-md bg-purple-600/10 hover:bg-purple-600/30 text-purple-300 border border-purple-500/30 hover:border-purple-500/50 transition-all font-medium"
+                  >
+                    Ver Detalles
                   </Link>
                 </div>
               </div>

@@ -1,5 +1,4 @@
 import { Link } from "@inertiajs/react";
-import { Button } from "@/components/ui/button";
 
 export default function Detail({ character }) {
   return (
@@ -15,12 +14,13 @@ export default function Detail({ character }) {
       >
         <div className="absolute inset-0 bg-gradient-to-b from-transparent to-slate-900"></div>
         
-        {/* Back Button */}
+        {/* Back Link */}
         <div className="absolute top-6 left-6 z-10">
-          <Link href="/">
-            <Button variant="outline" className="bg-slate-800/80 hover:bg-slate-700 text-white border-purple-500/30">
-              ← Volver al Roster
-            </Button>
+          <Link 
+            href="/"
+            className="inline-flex items-center px-4 py-2 rounded-md bg-slate-800/80 hover:bg-slate-700 text-white border border-purple-500/30 hover:border-purple-500/50 transition-all font-medium"
+          >
+            ← Volver al Roster
           </Link>
         </div>
 
