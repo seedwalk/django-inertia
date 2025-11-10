@@ -1,4 +1,5 @@
 from django.shortcuts import render
+from django.core.paginator import Paginator
 from inertia import inertia
 from .models import Character, Power, Affiliation
 
@@ -6,7 +7,24 @@ from .models import Character, Power, Affiliation
 @inertia('Index')
 def heroes_index(request):
     """Vista principal de héroes"""
+    # Obtener parámetros de query
+    page = request.GET.get('page', 1)
+    per_page = request.GET.get('per_page', 12)  # 12 héroes por página
+    universe = request.GET.get('universe', '')
+    
+    # Query base
     characters = Character.objects.filter(character_type='HERO').select_related().prefetch_related('powers', 'affiliations')
+    
+    # Filtro por universo si se especifica
+    if universe:
+        characters = characters.filter(universe=universe)
+    
+    # Ordenar por nombre
+    characters = characters.order_by('name')
+    
+    # Paginación
+    paginator = Paginator(characters, per_page)
+    page_obj = paginator.get_page(page)
     
     return {
         'heroes': [
@@ -15,12 +33,74 @@ def heroes_index(request):
                 'name': char.name,
                 'realName': char.real_name,
                 'universe': char.get_universe_display(),
+                'universeCode': char.universe,
                 'profileImage': char.profile_image,
                 'powerLevel': char.power_level,
                 'powers': [power.name for power in char.powers.all()],
             }
-            for char in characters
-        ]
+            for char in page_obj
+        ],
+        'pagination': {
+            'total': paginator.count,
+            'perPage': per_page,
+            'currentPage': page_obj.number,
+            'lastPage': paginator.num_pages,
+            'hasNextPage': page_obj.has_next(),
+            'hasPreviousPage': page_obj.has_previous(),
+        },
+        'filters': {
+            'universe': universe,
+        }
+    }
+
+
+@inertia('Villains')
+def villains_index(request):
+    """Vista principal de villanos"""
+    # Obtener parámetros de query
+    page = request.GET.get('page', 1)
+    per_page = request.GET.get('per_page', 12)  # 12 villanos por página
+    universe = request.GET.get('universe', '')
+    
+    # Query base
+    characters = Character.objects.filter(character_type='VILLAIN').select_related().prefetch_related('powers', 'affiliations')
+    
+    # Filtro por universo si se especifica
+    if universe:
+        characters = characters.filter(universe=universe)
+    
+    # Ordenar por nombre
+    characters = characters.order_by('name')
+    
+    # Paginación
+    paginator = Paginator(characters, per_page)
+    page_obj = paginator.get_page(page)
+    
+    return {
+        'villains': [
+            {
+                'id': char.id,
+                'name': char.name,
+                'realName': char.real_name,
+                'universe': char.get_universe_display(),
+                'universeCode': char.universe,
+                'profileImage': char.profile_image,
+                'powerLevel': char.power_level,
+                'powers': [power.name for power in char.powers.all()],
+            }
+            for char in page_obj
+        ],
+        'pagination': {
+            'total': paginator.count,
+            'perPage': per_page,
+            'currentPage': page_obj.number,
+            'lastPage': paginator.num_pages,
+            'hasNextPage': page_obj.has_next(),
+            'hasPreviousPage': page_obj.has_previous(),
+        },
+        'filters': {
+            'universe': universe,
+        }
     }
 
 

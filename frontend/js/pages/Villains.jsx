@@ -2,17 +2,17 @@
 import { Link, router } from "@inertiajs/react";
 import { useState } from "react";
 
-export default function Index({ heroes, pagination, filters }) {
+export default function Villains({ villains, pagination, filters }) {
   const [selectedUniverse, setSelectedUniverse] = useState(filters.universe || "");
 
   const handleUniverseFilter = (universe) => {
     setSelectedUniverse(universe);
-    router.get("/", { universe, page: 1 }, { preserveState: true });
+    router.get("/villains", { universe, page: 1 }, { preserveState: true });
   };
 
   const goToPage = (page) => {
     router.get(
-      "/",
+      "/villains",
       { page, universe: selectedUniverse },
       { preserveState: true }
     );
@@ -23,14 +23,14 @@ export default function Index({ heroes, pagination, filters }) {
       <div className="container mx-auto px-4 py-8">
         {/* Header */}
         <div className="text-center mb-8">
-          <h1 className="text-5xl font-bold text-white mb-4">
-            Heroes Roster
+          <h1 className="text-5xl font-bold text-red-500 mb-4">
+            Villains Gallery
           </h1>
           <p className="text-xl text-slate-300">
-            Los mejores héroes del universo
+            Los villanos más temibles del universo
           </p>
           <div className="mt-2 text-slate-400">
-            Total de héroes: <span className="text-blue-400 font-semibold">{pagination?.total || 0}</span>
+            Total de villanos: <span className="text-red-400 font-semibold">{pagination?.total || 0}</span>
           </div>
         </div>
 
@@ -38,13 +38,13 @@ export default function Index({ heroes, pagination, filters }) {
         <div className="mb-8 flex justify-center gap-3">
           <Link
             href="/"
-            className="px-5 py-2 rounded-lg font-semibold transition-all bg-blue-600 text-white shadow-lg"
+            className="px-5 py-2 rounded-lg font-semibold transition-all bg-slate-800 text-slate-300 hover:bg-slate-700"
           >
             🦸 Ver Héroes
           </Link>
           <Link
             href="/villains"
-            className="px-5 py-2 rounded-lg font-semibold transition-all bg-slate-800 text-slate-300 hover:bg-slate-700"
+            className="px-5 py-2 rounded-lg font-semibold transition-all bg-red-600 text-white shadow-lg"
           >
             🦹 Ver Villanos
           </Link>
@@ -56,7 +56,7 @@ export default function Index({ heroes, pagination, filters }) {
             onClick={() => handleUniverseFilter("")}
             className={`px-5 py-2 rounded-lg font-semibold transition-all ${
               selectedUniverse === ""
-                ? "bg-blue-600 text-white shadow-lg"
+                ? "bg-red-600 text-white shadow-lg"
                 : "bg-slate-800 text-slate-300 hover:bg-slate-700"
             }`}
           >
@@ -66,7 +66,7 @@ export default function Index({ heroes, pagination, filters }) {
             onClick={() => handleUniverseFilter("MARVEL")}
             className={`px-5 py-2 rounded-lg font-semibold transition-all ${
               selectedUniverse === "MARVEL"
-                ? "bg-red-600 text-white shadow-lg"
+                ? "bg-red-700 text-white shadow-lg"
                 : "bg-slate-800 text-slate-300 hover:bg-slate-700"
             }`}
           >
@@ -76,7 +76,7 @@ export default function Index({ heroes, pagination, filters }) {
             onClick={() => handleUniverseFilter("DC")}
             className={`px-5 py-2 rounded-lg font-semibold transition-all ${
               selectedUniverse === "DC"
-                ? "bg-blue-600 text-white shadow-lg"
+                ? "bg-purple-600 text-white shadow-lg"
                 : "bg-slate-800 text-slate-300 hover:bg-slate-700"
             }`}
           >
@@ -84,71 +84,71 @@ export default function Index({ heroes, pagination, filters }) {
           </button>
         </div>
 
-        {/* Heroes Grid */}
-        {heroes && heroes.length > 0 ? (
+        {/* Villains Grid */}
+        {villains && villains.length > 0 ? (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-            {heroes.map((hero) => (
+            {villains.map((villain) => (
               <div
-                key={hero.id}
-                className="bg-slate-800 rounded-lg overflow-hidden border border-slate-700 hover:border-slate-600 transition-all duration-300 hover:shadow-xl"
+                key={villain.id}
+                className="bg-slate-800 rounded-lg overflow-hidden border border-red-900 hover:border-red-600 transition-all duration-300 hover:shadow-xl hover:shadow-red-900/50"
               >
-                {/* Hero Image */}
+                {/* Villain Image */}
                 <div className="relative h-64 bg-slate-900">
-                  {hero.profileImage ? (
+                  {villain.profileImage ? (
                     <img
-                      src={hero.profileImage}
-                      alt={hero.name}
+                      src={villain.profileImage}
+                      alt={villain.name}
                       className="w-full h-full object-cover"
                     />
                   ) : (
                     <div className="w-full h-full flex items-center justify-center bg-slate-800">
-                      <div className="text-6xl text-slate-600">👤</div>
+                      <div className="text-6xl text-slate-600">😈</div>
                     </div>
                   )}
                   {/* Power Level Badge */}
-                  <div className="absolute top-3 right-3 bg-blue-600 px-3 py-1 rounded-full">
+                  <div className="absolute top-3 right-3 bg-red-600 px-3 py-1 rounded-full">
                     <span className="text-white font-bold text-sm">
-                      ⚡ {hero.powerLevel}
+                      ⚡ {villain.powerLevel}
                     </span>
                   </div>
                 </div>
 
-                {/* Hero Info */}
+                {/* Villain Info */}
                 <div className="p-5">
-                  <h3 className="text-2xl font-bold text-white mb-1">
-                    {hero.name}
+                  <h3 className="text-2xl font-bold text-red-400 mb-1">
+                    {villain.name}
                   </h3>
-                  {hero.realName && (
+                  {villain.realName && (
                     <p className="text-slate-400 text-sm mb-3">
-                      {hero.realName}
+                      {villain.realName}
                     </p>
                   )}
 
                   {/* Universe Badge */}
                   <div className="mb-3">
                     <span className="inline-block bg-slate-700 text-slate-200 px-3 py-1 rounded-full text-xs font-semibold">
-                      {hero.universe}
+                      {villain.universe}
                     </span>
                   </div>
 
                   {/* Powers */}
-                  {hero.powers && hero.powers.length > 0 && (
+                  {villain.powers && villain.powers.length > 0 && (
                     <div className="mb-4">
                       <h4 className="text-xs font-semibold text-slate-400 mb-2">
                         PODERES:
                       </h4>
                       <div className="flex flex-wrap gap-1">
-                        {hero.powers.slice(0, 3).map((power, idx) => (
+                        {villain.powers.slice(0, 3).map((power, idx) => (
                           <span
                             key={idx}
-                            className="inline-block bg-slate-700 text-slate-300 px-2 py-1 rounded text-xs"
+                            className="inline-block bg-red-900/30 text-red-300 px-2 py-1 rounded text-xs border border-red-800"
                           >
                             {power}
                           </span>
                         ))}
-                        {hero.powers.length > 3 && (
-                          <span className="inline-block bg-slate-700 text-slate-300 px-2 py-1 rounded text-xs">
-                            +{hero.powers.length - 3} más
+                        {villain.powers.length > 3 && (
+                          <span className="inline-block bg-red-900/30 text-red-300 px-2 py-1 rounded text-xs border border-red-800">
+                            +{villain.powers.length - 3} más
                           </span>
                         )}
                       </div>
@@ -157,8 +157,8 @@ export default function Index({ heroes, pagination, filters }) {
 
                   {/* Action Link */}
                   <Link 
-                    href={`/${hero.id}`}
-                    className="block w-full text-center px-4 py-2 rounded-md bg-blue-600 hover:bg-blue-500 text-white transition-colors font-medium"
+                    href={`/${villain.id}`}
+                    className="block w-full text-center px-4 py-2 rounded-md bg-red-600 hover:bg-red-500 text-white transition-colors font-medium"
                   >
                     Ver Detalles
                   </Link>
@@ -168,12 +168,12 @@ export default function Index({ heroes, pagination, filters }) {
           </div>
         ) : (
           <div className="text-center py-20">
-            <div className="text-6xl mb-4">🦸</div>
+            <div className="text-6xl mb-4">🦹</div>
             <p className="text-2xl text-slate-300 mb-4">
-              No hay héroes disponibles
+              No hay villanos disponibles
             </p>
             <p className="text-slate-400">
-              Ejecuta el comando seed para agregar héroes a la base de datos
+              Ejecuta el comando seed para agregar villanos a la base de datos
             </p>
           </div>
         )}
@@ -211,7 +211,7 @@ export default function Index({ heroes, pagination, filters }) {
                       onClick={() => goToPage(pageNum)}
                       className={`px-4 py-2 rounded-lg font-semibold transition-all ${
                         pageNum === pagination.currentPage
-                          ? "bg-blue-600 text-white"
+                          ? "bg-red-600 text-white"
                           : "bg-slate-800 text-slate-300 hover:bg-slate-700"
                       }`}
                     >
@@ -250,3 +250,4 @@ export default function Index({ heroes, pagination, filters }) {
     </div>
   );
 }
+
