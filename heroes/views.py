@@ -3,7 +3,7 @@ from inertia import inertia
 from .models import Character, Power, Affiliation
 
 
-@inertia('Heroes/Index')
+@inertia('Index')
 def heroes_index(request):
     """Vista principal de héroes"""
     characters = Character.objects.filter(character_type='HERO').select_related().prefetch_related('powers', 'affiliations')
